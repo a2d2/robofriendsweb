@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import { robots } from "./robots";
+import Scroll from "./Scroll";
 import CardList from "./Cardlist";
 import SearchBox from "./SearchBox";
 
@@ -38,9 +39,11 @@ class App extends Component {
     } else {
       return (
         <div className="tc">
-          <h1>Arturo Robot</h1>
+          <h1 className="f1">Arturo Robot</h1>
           <SearchBox searchChange={this.onSearchChange} />
-          <CardList robots={filteredRobots} />;
+          <Scroll>
+            <CardList robots={filteredRobots} />
+          </Scroll>
         </div>
       );
     }
