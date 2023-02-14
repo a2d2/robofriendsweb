@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { robots } from "./robots";
+//import { robots } from "./robots";
 import CardList from "./Cardlist";
 import SearchBox from "./SearchBox";
 
@@ -9,9 +9,16 @@ class App extends Component {
     super();
     this.state = {
       //state contains the things that can change in our app. And it lives in the parent component
-      robots: robots,
+      robots: [], //im real life this will come from an API, is not hardcoded in robots.js like-> robots: robots. it is an empty array initially.
       searchfield: "",
     };
+  }
+
+  componentDidMount() {
+    // help us rerender the state of robots in the constructor() with the robots cardlist
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((users) => this.setState({ robots: users }));
   }
 
   //constructor and render are pre-built in React. But when you create your own methods like "onSearchChange" on a Component, use this syntax: "= (event) => {". So arrow functions, will make sure that the "this" value is according to where it was created which is the "App"
@@ -26,13 +33,17 @@ class App extends Component {
         .toLowerCase()
         .includes(this.state.searchfield.toLowerCase());
     });
-    return (
-      <div className="tc">
-        <h1>Arturo Robot</h1>
-        <SearchBox searchChange={this.onSearchChange} />
-        <CardList robots={filteredRobots} />;
-      </div>
-    );
+    if (this.state.robots.length === 0) {
+      return <h1> Loading</h1>;
+    } else {
+      return (
+        <div className="tc">
+          <h1>Arturo Robot</h1>
+          <SearchBox searchChange={this.onSearchChange} />
+          <CardList robots={filteredRobots} />;
+        </div>
+      );
+    }
   }
 }
 
