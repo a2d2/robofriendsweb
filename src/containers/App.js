@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 //import { robots } from "./robots";
-import Scroll from "./Scroll";
-import CardList from "./Cardlist";
-import SearchBox from "./SearchBox";
+import Scroll from "../components/Scroll";
+import CardList from "../components/Cardlist";
+import SearchBox from "../components/SearchBox";
 
 //props are simply things that come out of state. So a parent feeds "state" into a child component and as soon as a child (components) component receives a "sate its a prperty. That child can never change that property. The parent just tells it what the "state" is and the child receives it as "robots"
 class App extends Component {
@@ -29,24 +29,21 @@ class App extends Component {
   };
 
   render() {
-    const filteredRobots = this.state.robots.filter((robots) => {
-      return robots.name
-        .toLowerCase()
-        .includes(this.state.searchfield.toLowerCase());
+    const { robots, searchfield } = this.state;
+    const filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
-    if (this.state.robots.length === 0) {
-      return <h1> Loading</h1>;
-    } else {
-      return (
-        <div className="tc">
-          <h1 className="f1">Arturo Robot</h1>
-          <SearchBox searchChange={this.onSearchChange} />
-          <Scroll>
-            <CardList robots={filteredRobots} />
-          </Scroll>
-        </div>
-      );
-    }
+    return !robots.length ? (
+      <h1> Loading</h1>
+    ) : (
+      <div className="tc">
+        <h1 className="f1">Arturo Robot</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <Scroll>
+          <CardList robots={filteredRobots} />
+        </Scroll>
+      </div>
+    );
   }
 }
 
